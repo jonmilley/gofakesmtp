@@ -77,7 +77,12 @@ func (s *Session) Data(r io.Reader) error {
 		ReceivedAt: time.Now(),
 	}
 
-	s.ch <- email
+	select {
+	case s.ch <- email:
+	default:
+		// Channel full — drop the email rather than stalling the SMTP connection.
+		// This should not occur in normal use (buffer is 100).
+	}
 	return nil
 }
 

@@ -53,4 +53,6 @@ var (
 
 	errorStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("196"))
+
+	statusBarRightStyle = lipgloss.NewStyle().Align(lipgloss.Right)
 )

@@ -87,6 +87,29 @@ func TestModel_DeleteEmail(t *testing.T) {
 	}
 }
 
+func TestModel_DeleteLastEmail_ClampsSelection(t *testing.T) {
+	ch := make(chan smtppkg.Email, 10)
+	m := tui.New(ch, "", 80, 24)
+
+	m = applyUpdate(t, m, tui.EmailReceivedMsg{Email: makeEmail("a@b.com", "First")})
+	m = applyUpdate(t, m, tui.EmailReceivedMsg{Email: makeEmail("c@d.com", "Second")})
+
+	// Navigate to last item
+	m = applyUpdate(t, m, tea.KeyMsg{Type: tea.KeyDown})
+	if m.SelectedIndex() != 1 {
+		t.Fatalf("expected selection at 1, got %d", m.SelectedIndex())
+	}
+
+	// Delete the last item — selection should clamp to 0
+	m = applyUpdate(t, m, tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("d")})
+	if m.EmailCount() != 1 {
+		t.Errorf("expected 1 email after delete, got %d", m.EmailCount())
+	}
+	if m.SelectedIndex() != 0 {
+		t.Errorf("expected selection clamped to 0, got %d", m.SelectedIndex())
+	}
+}
+
 func TestModel_StorageError_ShowsInStatusBar(t *testing.T) {
 	ch := make(chan smtppkg.Email, 10)
 	m := tui.New(ch, "", 80, 24)

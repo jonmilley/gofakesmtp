@@ -124,8 +124,8 @@ func (m Model) View() string {
 	listWidth := m.width / 3
 	previewWidth := m.width - listWidth - 1 // -1 for border
 
-	listContent := m.renderList(listWidth, contentHeight)
-	previewContent := m.renderPreview(previewWidth, contentHeight)
+	listContent := m.renderList(listWidth)
+	previewContent := m.renderPreview(previewWidth)
 
 	leftPane := listPaneStyle.Width(listWidth).Height(contentHeight).Render(listContent)
 	rightPane := previewPaneStyle.Width(previewWidth).Height(contentHeight).Render(previewContent)
@@ -136,7 +136,7 @@ func (m Model) View() string {
 	return lipgloss.JoinVertical(lipgloss.Left, body, statusBar)
 }
 
-func (m Model) renderList(width, height int) string {
+func (m Model) renderList(width int) string {
 	if len(m.emails) == 0 {
 		return dimStyle.Render("Waiting for emails...")
 	}
@@ -158,7 +158,7 @@ func (m Model) renderList(width, height int) string {
 	return strings.Join(rows, "\n")
 }
 
-func (m Model) renderPreview(width, height int) string {
+func (m Model) renderPreview(width int) string {
 	if len(m.emails) == 0 || m.selected >= len(m.emails) {
 		return dimStyle.Render("No email selected.")
 	}
@@ -192,7 +192,7 @@ func (m Model) renderStatusBar() string {
 
 	keys := dimStyle.Render("↑↓/jk navigate  d delete  q quit")
 
-	right := lipgloss.NewStyle().Width(m.width - lipgloss.Width(keys) - 2).Align(lipgloss.Right).
+	right := statusBarRightStyle.Width(m.width - lipgloss.Width(keys) - 2).
 		Render(fmt.Sprintf("%s  %s%s", count, status, msg))
 
 	return statusBarStyle.Width(m.width).Render(lipgloss.JoinHorizontal(lipgloss.Top, keys, right))
@@ -202,8 +202,9 @@ func truncate(s string, max int) string {
 	if max <= 0 {
 		return ""
 	}
-	if len(s) <= max {
+	runes := []rune(s)
+	if len(runes) <= max {
 		return s
 	}
-	return s[:max-1] + "…"
+	return string(runes[:max-1]) + "…"
 }
