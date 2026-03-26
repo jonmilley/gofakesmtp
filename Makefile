@@ -1,7 +1,7 @@
 BINARY := gofakesmtp
 LDFLAGS := -ldflags="-s -w"
 
-.PHONY: build build-small clean test
+.PHONY: build build-small clean test test-integration
 
 build:
 	go build $(LDFLAGS) -o $(BINARY) .
@@ -16,3 +16,6 @@ clean:
 
 test:
 	go test ./...
+
+test-integration:
+	go test -tags integration -v ./...
