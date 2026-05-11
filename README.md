@@ -4,7 +4,7 @@ A fake SMTP server with a terminal UI for testing email in applications. A Go eq
 
 Run it locally, point your app at `localhost:2525`, and watch emails appear in real time — no mail server, no credentials, nothing sent.
 
-![Terminal UI showing a split-pane layout with an email list on the left and a preview on the right]()
+![Terminal UI showing a split-pane layout with an email list on the left and a preview on the right](gofakesmtp.png)
 
 ## Features
 

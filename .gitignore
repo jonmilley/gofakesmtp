@@ -1,3 +1,4 @@
 gofakesmtp
 .superpowers/
 *.eml
+.DS_Store
