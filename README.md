@@ -100,6 +100,8 @@ const transporter = nodemailer.createTransport({ host: "127.0.0.1", port: 2525, 
 
 ### Example: Python `smtplib`
 
+See [send-test-email.py](/scripts/send-test-email.py) for example using smtplib
+
 ```python
 with smtplib.SMTP("127.0.0.1", 2525) as s:
     s.sendmail("from@example.com", ["to@example.com"], msg)
