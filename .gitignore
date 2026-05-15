@@ -1,4 +1,6 @@
 gofakesmtp
 .superpowers/
 *.eml
+*.log
 .DS_Store
+__pycache__/

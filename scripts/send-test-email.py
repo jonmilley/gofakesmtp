@@ -18,7 +18,12 @@ def main() -> int:
         "--body",
         default="Hello from the test script!\n\nThis is a plain-text test message.\n",
     )
+    parser.add_argument("--user", help="Username for SMTP AUTH PLAIN")
+    parser.add_argument("--password", help="Password for SMTP AUTH PLAIN")
     args = parser.parse_args()
+
+    if bool(args.user) != bool(args.password):
+        parser.error("--user and --password must be provided together")
 
     msg = EmailMessage()
     msg["From"] = args.sender
@@ -28,6 +33,8 @@ def main() -> int:
 
     try:
         with smtplib.SMTP(args.host, args.port, timeout=5) as s:
+            if args.user:
+                s.login(args.user, args.password)
             s.send_message(msg)
     except (OSError, smtplib.SMTPException) as e:
         print(f"failed to send: {e}", file=sys.stderr)

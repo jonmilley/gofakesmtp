@@ -13,6 +13,8 @@ Run it locally, point your app at `localhost:2525`, and watch emails appear in r
 - Keyboard navigation
 - Optional auto-save to `.eml` files on disk
 - STARTTLS support for apps that require TLS
+- Optional AUTH PLAIN with a fixed username/password, or a permissive mode that accepts any credentials
+- Optional full SMTP wire-session log to a file
 
 ## Install
 
@@ -58,6 +60,24 @@ Enable STARTTLS (requires a TLS certificate and key):
 gofakesmtp --tls-cert cert.pem --tls-key key.pem
 ```
 
+Require AUTH PLAIN with a fixed username/password:
+
+```bash
+gofakesmtp --smtp-user alice --smtp-pass s3cret
+```
+
+Advertise AUTH PLAIN and accept any credentials (useful for clients that insist on authenticating):
+
+```bash
+gofakesmtp --smtp-auth-any
+```
+
+Append the full SMTP wire dialogue (including AUTH exchanges) to a log file:
+
+```bash
+gofakesmtp --session-log ./smtp-session.log
+```
+
 ### All flags
 
 | Flag | Short | Default | Description |
@@ -67,6 +87,10 @@ gofakesmtp --tls-cert cert.pem --tls-key key.pem
 | `--output-dir` | `-o` | _(none)_ | Directory to auto-save emails as `.eml` files |
 | `--tls-cert` | | _(none)_ | TLS certificate file (enables STARTTLS) |
 | `--tls-key` | | _(none)_ | TLS private key file (enables STARTTLS) |
+| `--smtp-user` | | _(none)_ | Username for AUTH PLAIN; pair with `--smtp-pass` to require auth |
+| `--smtp-pass` | | _(none)_ | Password for AUTH PLAIN; pair with `--smtp-user` to require auth |
+| `--smtp-auth-any` | | `false` | Advertise AUTH PLAIN and accept any credentials (mutually exclusive with `--smtp-user`/`--smtp-pass`) |
+| `--session-log` | | _(none)_ | File path to append the full SMTP wire-session log |
 
 ## Keyboard shortcuts
 
@@ -83,7 +107,7 @@ Point your app's SMTP settings at:
 
 - **Host:** `127.0.0.1`
 - **Port:** `2525` (or whatever you set with `--port`)
-- **Auth:** none required
+- **Auth:** none required by default; if `--smtp-user`/`--smtp-pass` are set, use AUTH PLAIN with those credentials; if `--smtp-auth-any` is set, AUTH PLAIN is advertised and any credentials are accepted
 - **TLS:** off by default (use `--tls-cert`/`--tls-key` to enable STARTTLS)
 
 ### Example: Go `net/smtp`
