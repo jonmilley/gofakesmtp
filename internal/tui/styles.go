@@ -55,4 +55,15 @@ var (
 			Foreground(lipgloss.Color("196"))
 
 	statusBarRightStyle = lipgloss.NewStyle().Align(lipgloss.Right)
+
+	// Log viewer
+	logTitleStyle = lipgloss.NewStyle().
+			Background(lipgloss.Color("25")).
+			Foreground(lipgloss.Color("231")).
+			Bold(true)
+
+	logPaneStyle = lipgloss.NewStyle().
+			PaddingLeft(1).
+			PaddingRight(1).
+			Foreground(lipgloss.Color("252"))
 )

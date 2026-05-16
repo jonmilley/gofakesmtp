@@ -90,7 +90,7 @@ func rootCmd() *cobra.Command {
 			}()
 
 			// Start TUI
-			model := tui.New(ch, outputDir, 0, 0)
+			model := tui.New(ch, outputDir, sessionLog, 0, 0)
 			p := tea.NewProgram(model, tea.WithAltScreen())
 			if _, err := p.Run(); err != nil {
 				return fmt.Errorf("TUI error: %w", err)

@@ -99,6 +99,18 @@ gofakesmtp --session-log ./smtp-session.log
 | `↑` / `k` | Move up |
 | `↓` / `j` | Move down |
 | `d` | Delete selected email |
+| `l` | Open the session log viewer (only shown when `--session-log` is set) |
+| `q` / `Ctrl+C` | Quit |
+
+In the session log viewer:
+
+| Key | Action |
+|-----|--------|
+| `↑↓` / `j` `k` | Scroll one line |
+| `PgUp` / `PgDn` (also `b` / `f`) | Page up/down |
+| `g` / `G` | Jump to top / bottom |
+| `r` | Refresh now (auto-refreshes once per second; re-pins to tail) |
+| `l` / `Esc` | Close, return to email view |
 | `q` / `Ctrl+C` | Quit |
 
 ## Configuring your app
